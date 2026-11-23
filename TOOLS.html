@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الدليل الشامل لأدوات الذكاء الاصطناعي | د. أحمد زغدود</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #2563eb;
+    --primary-dark: #1e40af;
+    --accent: #f59e0b;
+    --bg: #f8fafc;
+    --card-bg: #ffffff;
+    --text: #1e293b;
+    --text-light: #64748b;
+    --border: #e2e8f0;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Tajawal', 'Inter', sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    transition: all 0.3s ease;
+  }
+  
+  /* Header */
+  header {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: pulse 10s infinite;
+  }
+  @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+  
+  .lang-switcher {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    gap: 8px;
+    z-index: 20;
+  }
+  html[dir="ltr"] .lang-switcher { left: auto; right: 20px; }
+  .lang-btn {
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: white;
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: 0.3s;
+    backdrop-filter: blur(5px);
+  }
+  .lang-btn:hover, .lang-btn.active { background: white; color: var(--primary); }
+
+  .basmala { font-size: 1.3rem; margin-bottom: 15px; opacity: 0.9; font-weight: 300; }
+  header h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 10px; position: relative; }
+  .creator-badge {
+    display: inline-block;
+    background: var(--accent);
+    color: #1e293b;
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-top: 15px;
+    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+  }
+
+  /* Layout */
+  .main-layout {
+    display: flex;
+    gap: 30px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 20px 60px;
+    align-items: flex-start;
+  }
+
+  .sidebar {
+    width: 280px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 20px;
+    background: var(--card-bg);
+    padding: 24px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .search-box {
+    width: 100%;
+    padding: 14px 18px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    outline: none;
+    transition: 0.3s;
+    margin-bottom: 20px;
+    background: var(--bg);
+  }
+  .search-box:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); background: white; }
+  
+  .filters {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    overflow-y: auto;
+    padding-right: 5px;
+  }
+  .filters::-webkit-scrollbar { width: 4px; }
+  .filters::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  
+  .filter-btn {
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--text);
+    padding: 10px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 600;
+    text-align: start;
+    transition: 0.2s;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .filter-btn:hover { background: var(--bg); color: var(--primary); }
+  .filter-btn.active { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); }
+
+  .content-area { flex: 1; min-width: 0; }
+
+  /* Grid & Cards */
+  .category-section { margin-bottom: 40px; display: none; }
+  .category-section.active { display: block; }
+  .category-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 20px;
+    padding-right: 15px;
+    border-right: 4px solid var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  html[dir="ltr"] .category-title { padding-right: 0; padding-left: 15px; border-right: none; border-left: 4px solid var(--accent); }
+  
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px 20px;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    transform: scaleX(0);
+    transition: transform 0.3s;
+  }
+  .card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.08); border-color: var(--primary); }
+  .card:hover::before { transform: scaleX(1); }
+  
+  .card-logo {
+    width: 56px; height: 56px;
+    border-radius: 14px;
+    object-fit: contain;
+    background: #f8fafc;
+    padding: 8px;
+    border: 1px solid var(--border);
+    margin-bottom: 16px;
+    transition: 0.3s;
+  }
+  .card:hover .card-logo { transform: scale(1.1); border-color: var(--primary); }
+  
+  .card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+  .card p { font-size: 0.85rem; color: var(--text-light); line-height: 1.5; }
+  
+  .tag {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: #dbeafe;
+    color: var(--primary-dark);
+    font-size: 0.7rem;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-weight: 700;
+  }
+  html[dir="ltr"] .tag { right: auto; left: 12px; }
+  .tag.paid { background: #fef3c7; color: #92400e; }
+  .tag.free { background: #dcfce7; color: #166534; }
+  .tag.expert { background: #f3e8ff; color: #6b21a8; }
+
+  .rank-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(255, 215, 0, 0.2);
+    color: #854d0e;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    border: 1px solid rgba(255, 215, 0, 0.5);
+  }
+  html[dir="ltr"] .rank-badge { left: auto; right: 12px; }
+
+  /* Important Notes Section */
+  .notes-section {
+    background: #fffbeb;
+    border: 1px solid #fcd34d;
+    border-radius: 16px;
+    padding: 30px;
+    margin-top: 40px;
+  }
+  .notes-section h3 { color: #92400e; font-size: 1.3rem; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+  .notes-section ul { list-style: none; padding: 0; }
+  .notes-section li {
+    margin-bottom: 15px;
+    padding-right: 20px;
+    position: relative;
+    color: #78350f;
+    line-height: 1.6;
+  }
+  html[dir="ltr"] .notes-section li { padding-right: 0; padding-left: 20px; }
+  .notes-section li::before {
+    content: '⚠️';
+    position: absolute;
+    right: 0;
+    top: 2px;
+  }
+  html[dir="ltr"] .notes-section li::before { right: auto; left: 0; }
+
+  /* Footer */
+  footer {
+    background: #0f172a;
+    color: #94a3b8;
+    text-align: center;
+    padding: 40px 20px;
+    margin-top: 60px;
+  }
+  footer .creator { color: white; font-size: 1.4rem; font-weight: 700; margin-bottom: 5px; }
+
+  @media (max-width: 900px) {
+    .main-layout { flex-direction: column; padding-top: 20px; }
+    .sidebar { width: 100%; position: static; max-height: none; padding: 20px; }
+    .filters { flex-direction: row; overflow-x: auto; padding-bottom: 10px; }
+    .filter-btn { width: auto; white-space: nowrap; flex-shrink: 0; }
+    header h1 { font-size: 1.6rem; }
+    .grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="lang-switcher">
+    <button class="lang-btn active" onclick="setLanguage('ar')">AR</button>
+    <button class="lang-btn" onclick="setLanguage('fr')">FR</button>
+    <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+  </div>
+  <div class="basmala" data-i18n="basmala">بسم الله الرحمن الرحيم</div>
+  <h1 data-i18n="title">الدليل الشامل لأدوات الذكاء الاصطناعي</h1>
+  <div class="creator-badge" data-i18n="creator_badge">✨ تم إنشاؤه وتنسيقه بواسطة د. أحمد زغدود</div>
+</header>
+
+<div class="main-layout">
+  <aside class="sidebar">
+    <div class="sidebar-title" data-i18n="sidebar_title">القائمة</div>
+    <input type="text" class="search-box" id="searchInput" data-i18n-placeholder="search_placeholder" placeholder="🔍 ابحث عن أداة...">
+    <div class="filters" id="filterContainer">
+      <button class="filter-btn active" data-filter="all" data-i18n="cat_all">الكل</button>
+      <button class="filter-btn" data-filter="classement" data-i18n="cat_classement">🏆 التصنيف</button>
+      <button class="filter-btn" data-filter="llm" data-i18n="cat_llm">🧠 النماذج اللغوية</button>
+      <button class="filter-btn" data-filter="opensource" data-i18n="cat_opensource">📦 مفتوحة المصدر</button>
+      <button class="filter-btn" data-filter="research" data-i18n="cat_research">🔬 البحث العلمي</button>
+      <button class="filter-btn" data-filter="pdf" data-i18n="cat_pdf">📄 مستندات و PDF</button>
+      <button class="filter-btn" data-filter="code" data-i18n="cat_code">💻 البرمجة والتطوير</button>
+      <button class="filter-btn" data-filter="image" data-i18n="cat_image">🎨 توليد الصور</button>
+      <button class="filter-btn" data-filter="video" data-i18n="cat_video">🎬 الفيديو والأنيميشن</button>
+      <button class="filter-btn" data-filter="audio" data-i18n="cat_audio">🎙️ الصوت والموسيقى</button>
+      <button class="filter-btn" data-filter="edu" data-i18n="cat_edu">🎓 التعليم والتدريس</button>
+      <button class="filter-btn" data-filter="write" data-i18n="cat_write">✍️ الترجمة والصياغة</button>
+      <button class="filter-btn" data-filter="office" data-i18n="cat_office">📊 العروض والمكاتب</button>
+      <button class="filter-btn" data-filter="data" data-i18n="cat_data">📈 تحليل البيانات</button>
+      <button class="filter-btn" data-filter="agents" data-i18n="cat_agents">🤖 الأتمتة والوكلاء</button>
+      <button class="filter-btn" data-filter="3d" data-i18n="cat_3d">🧊 التصميم ثلاثي الأبعاد</button>
+      <button class="filter-btn" data-filter="meetings" data-i18n="cat_meetings">📝 الاجتماعات والملاحظات</button>
+      <button class="filter-btn" data-filter="marketing" data-i18n="cat_marketing">📢 التسويق والمحتوى</button>
+      <button class="filter-btn" data-filter="nocode" data-i18n="cat_nocode">🛠️ بدون برمجة (No-Code)</button>
+      <button class="filter-btn" data-filter="science" data-i18n="cat_science">🔭 الرياضيات والعلوم</button>
+      <button class="filter-btn" data-filter="security" data-i18n="cat_security">🛡️ الأمن السيبراني</button>
+      <button class="filter-btn" data-filter="productivity" data-i18n="cat_productivity">⚡ الإنتاجية وإدارة المشاريع</button>
+      <button class="filter-btn" data-filter="guides" data-i18n="cat_guides">📚 أدلة ومراجع</button>
+    </div>
+  </aside>
+
+  <main class="content-area" id="contentContainer"></main>
+</div>
+
+<footer>
+  <div class="creator">د. أحمد زغدود</div>
+  <p style="margin-top: 20px; opacity: 0.6;">© 2026 جميع الحقوق محفوظة</p>
+</footer>
+
+<script>
+const translations = {
+  ar: {
+    basmala: "بسم الله الرحمن الرحيم", title: "الدليل الشامل لأدوات الذكاء الاصطناعي",
+    creator_badge: "✨ تم إنشاؤه وتنسيقه بواسطة د. أحمد زغدود", sidebar_title: "القائمة",
+    search_placeholder: "🔍 ابحث عن أداة...", cat_all: "الكل", cat_classement: "🏆 التصنيف",
+    cat_llm: "🧠 النماذج اللغوية", cat_opensource: "📦 مفتوحة المصدر", cat_research: "🔬 البحث العلمي",
+    cat_pdf: "📄 مستندات و PDF", cat_code: "💻 البرمجة والتطوير", cat_image: "🎨 توليد الصور",
+    cat_video: "🎬 الفيديو والأنيميشن", cat_audio: "🎙️ الصوت والموسيقى", cat_edu: "🎓 التعليم والتدريس",
+    cat_write: "✍️ الترجمة والصياغة", cat_office: "📊 العروض والمكاتب", cat_data: "📈 تحليل البيانات",
+    cat_agents: "🤖 الأتمتة والوكلاء", cat_3d: "🧊 التصميم ثلاثي الأبعاد", cat_meetings: "📝 الاجتماعات",
+    cat_marketing: "📢 التسويق والمحتوى", cat_nocode: "🛠️ بدون برمجة", cat_science: "🔭 الرياضيات والعلوم",
+    cat_security: "🛡️ الأمن السيبراني", cat_productivity: "⚡ الإنتاجية والمشاريع", cat_guides: "📚 أدلة ومراجع",
+    tag_free: "مجاني", tag_paid: "مدفوع", tag_expert: "خبير", notes_title: "⚠️ ملاحظات مهمة قبل الاستخدام"
+  },
+  fr: {
+    basmala: "Au nom d'Allah, le Tout Miséricordieux", title: "Le Guide Complet des Outils d'IA",
+    creator_badge: "✨ Créé et organisé par Dr. Ahmed Zaghdoud", sidebar_title: "Menu",
+    search_placeholder: "🔍 Rechercher...", cat_all: "Tous", cat_classement: "🏆 Classement",
+    cat_llm: "🧠 Modèles Linguistiques", cat_opensource: "📦 Open Source", cat_research: "🔬 Recherche Académique",
+    cat_pdf: "📄 Documents et PDF", cat_code: "💻 Programmation", cat_image: "🎨 Génération d'Images",
+    cat_video: "🎬 Vidéo et Animation", cat_audio: "🎙️ Audio et Musique", cat_edu: "🎓 Éducation",
+    cat_write: "✍️ Traduction et Rédaction", cat_office: "📊 Présentations et Bureau", cat_data: "📈 Science des Données",
+    cat_agents: "🤖 Automatisation et Agents", cat_3d: "🧊 Design 3D", cat_meetings: "📝 Réunions",
+    cat_marketing: "📢 Marketing", cat_nocode: "🛠️ No-Code", cat_science: "🔭 Sciences et Maths",
+    cat_security: "🛡️ Cybersécurité", cat_productivity: "⚡ Productivité", cat_guides: "📚 Guides et Références",
+    tag_free: "Gratuit", tag_paid: "Payant", tag_expert: "Expert", notes_title: "⚠️ Notes importantes avant utilisation"
+  },
+  en: {
+    basmala: "In the name of Allah, the Most Gracious", title: "The Complete AI Tools Guide",
+    creator_badge: "✨ Created and organized by Dr. Ahmed Zaghdoud", sidebar_title: "Menu",
+    search_placeholder: "🔍 Search tool...", cat_all: "All", cat_classement: "🏆 Ranking",
+    cat_llm: "🧠 Language Models", cat_opensource: "📦 Open Source", cat_research: "🔬 Academic Research",
+    cat_pdf: "📄 Documents & PDF", cat_code: "💻 Coding & Dev", cat_image: "🎨 Image Generation",
+    cat_video: "🎬 Video & Animation", cat_audio: "🎙️ Audio & Music", cat_edu: "🎓 Education",
+    cat_write: "✍️ Translation & Writing", cat_office: "📊 Presentations & Office", cat_data: "📈 Data Science",
+    cat_agents: "🤖 Automation & Agents", cat_3d: "🧊 3D Design", cat_meetings: "📝 Meetings",
+    cat_marketing: "📢 Marketing", cat_nocode: "🛠️ No-Code", cat_science: "🔭 Science & Math",
+    cat_security: "🛡️ Cybersecurity", cat_productivity: "⚡ Productivity", cat_guides: "📚 Guides & References",
+    tag_free: "Free", tag_paid: "Paid", tag_expert: "Expert", notes_title: "⚠️ Important Notes Before Use"
+  }
+};
+
+// Data array is compressed for efficiency but contains all requested tools
+const toolsData = [
+  { cat: 'llm', name: 'ChatGPT', rank: 1, tags: 'popular', desc: {ar:'المحادثة، التفكير، البحث، تحليل الملفات', fr:'Conversation, raisonnement, analyse de fichiers', en:'Conversation, reasoning, file analysis'}, domain: 'openai.com', url: 'https://chat.openai.com', tag: 'free' },
+  { cat: 'llm', name: 'Claude', rank: 2, tags: 'popular code', desc: {ar:'تحليل المستندات الطويلة، الكتابة الأكاديمية', fr:'Analyse de longs documents, écriture académique', en:'Long document analysis, academic writing'}, domain: 'claude.ai', url: 'https://claude.ai', tag: 'free' },
+  { cat: 'llm', name: 'Gemini', rank: 3, tags: 'popular free', desc: {ar:'فهم النصوص، الصور، الفيديو، والتكامل مع Google', fr:'Compréhension texte, image, vidéo, intégration Google', en:'Text, image, video understanding, Google integration'}, domain: 'gemini.google.com', url: 'https://gemini.google.com', tag: 'free' },
+  { cat: 'llm', name: 'DeepSeek', tags: 'popular free code', desc: {ar:'التفكير المنطقي، الرياضيات، البرمجة والتحليل', fr:'Raisonnement logique, maths, programmation', en:'Logical reasoning, math, coding and analysis'}, domain: 'deepseek.com', url: 'https://chat.deepseek.com', tag: 'free' },
+  { cat: 'llm', name: 'Qwen', tags: 'popular free', desc: {ar:'اللغات، البرمجة، الرؤية الحاسوبية', fr:'Langues, programmation, vision par ordinateur', en:'Languages, coding, computer vision'}, domain: 'chat.qwen.ai', url: 'https://chat.qwen.ai', tag: 'free' },
+  { cat: 'llm', name: 'Mistral / Le Chat', tags: 'popular free', desc: {ar:'المحادثة، التحليل، البرمجة والنماذج المفتوحة', fr:'Conversation, analyse, code et modèles ouverts', en:'Conversation, analysis, coding and open models'}, domain: 'mistral.ai', url: 'https://chat.mistral.ai', tag: 'free' },
+  { cat: 'llm', name: 'Microsoft Copilot', tags: 'popular free', desc: {ar:'المساعدة المكتبية، البحث، الكتابة وتكامل Microsoft', fr:'Assistance bureautique, recherche, intégration Microsoft', en:'Office assistance, search, Microsoft integration'}, domain: 'copilot.microsoft.com', url: 'https://copilot.microsoft.com', tag: 'free' },
+  { cat: 'llm', name: 'Perplexity', tags: 'popular free', desc: {ar:'البحث عبر الإنترنت والإجابات المدعومة بالمصادر', fr:'Recherche web et réponses avec sources', en:'Web search and source-backed answers'}, domain: 'perplexity.ai', url: 'https://www.perplexity.ai', tag: 'free' },
+  { cat: 'llm', name: 'Grok', tags: 'popular', desc: {ar:'المحادثة، التحليل والبحث (xAI)', fr:'Conversation, analyse et recherche (xAI)', en:'Conversation, analysis and search (xAI)'}, domain: 'grok.com', url: 'https://grok.com', tag: 'paid' },
+  { cat: 'llm', name: 'Meta AI', tags: 'free', desc: {ar:'المحادثة وتوليد الصور والمساعدة العامة', fr:'Conversation, génération d\'images et assistance', en:'Conversation, image generation and general help'}, domain: 'meta.ai', url: 'https://www.meta.ai', tag: 'free' },
+  { cat: 'llm', name: 'Poe', tags: 'popular', desc: {ar:'الوصول إلى نماذج ومساعدين متعددين في منصة واحدة', fr:'Accès à plusieurs modèles et assistants', en:'Access to multiple models and assistants'}, domain: 'poe.com', url: 'https://poe.com', tag: 'free' },
+  { cat: 'llm', name: 'You.com', tags: 'free', desc: {ar:'البحث الذكي والمساعدات المتخصصة', fr:'Recherche intelligente et assistants spécialisés', en:'Smart search and specialized assistants'}, domain: 'you.com', url: 'https://you.com', tag: 'free' },
+  { cat: 'llm', name: 'HuggingChat', tags: 'free code', desc: {ar:'تجربة نماذج لغوية مختلفة مفتوحة المصدر', fr:'Essayer différents modèles linguistiques open source', en:'Try different open-source language models'}, domain: 'huggingface.co', url: 'https://huggingface.co/chat', tag: 'free' },
+  { cat: 'llm', name: 'Phind', tags: 'code free', desc: {ar:'البحث التقني والبرمجة', fr:'Recherche technique et programmation', en:'Technical search and coding'}, domain: 'phind.com', url: 'https://www.phind.com', tag: 'free' },
+  { cat: 'llm', name: 'Duck.ai', tags: 'free', desc: {ar:'محادثة مع خيارات خصوصية عالية', fr:'Conversation avec options de confidentialité', en:'Conversation with high privacy options'}, domain: 'duckduckgo.com', url: 'https://duckduckgo.com/chat', tag: 'free' },
+
+  { cat: 'opensource', name: 'Llama', tags: 'free', desc: {ar:'نماذج لغوية مفتوحة الأوزان من Meta', fr:'Modèles linguistiques open-weight de Meta', en:'Open-weight language models from Meta'}, domain: 'llama.meta.com', url: 'https://llama.meta.com', tag: 'free' },
+  { cat: 'opensource', name: 'Gemma', tags: 'free', desc: {ar:'نماذج خفيفة ومتعددة الاستخدامات من Google', fr:'Modèles légers et polyvalents de Google', en:'Lightweight and versatile models from Google'}, domain: 'ai.google', url: 'https://ai.google', tag: 'free' },
+  { cat: 'opensource', name: 'Phi', tags: 'free', desc: {ar:'نماذج صغيرة وفعالة من Microsoft', fr:'Petits modèles efficaces de Microsoft', en:'Small and efficient models from Microsoft'}, domain: 'microsoft.com', url: 'https://www.microsoft.com', tag: 'free' },
+  { cat: 'opensource', name: 'Falcon', tags: 'free', desc: {ar:'نماذج لغوية مفتوحة من TII', fr:'Modèles linguistiques ouverts de TII', en:'Open language models from TII'}, domain: 'falconllm.tii.ae', url: 'https://falconllm.tii.ae', tag: 'free' },
+  { cat: 'opensource', name: 'Ollama', tags: 'free code', desc: {ar:'تشغيل النماذج محلياً بسهولة', fr:'Exécuter des modèles localement facilement', en:'Run models locally with ease'}, domain: 'ollama.com', url: 'https://ollama.com', tag: 'free' },
+  { cat: 'opensource', name: 'LM Studio', tags: 'free', desc: {ar:'تحميل وتشغيل نماذج محلية بواجهة رسومية', fr:'Télécharger et exécuter des modèles locaux avec GUI', en:'Download and run local models with GUI'}, domain: 'lmstudio.ai', url: 'https://lmstudio.ai', tag: 'free' },
+  { cat: 'opensource', name: 'vLLM', tags: 'free code', desc: {ar:'استضافة واستدلال النماذج بكفاءة عالية', fr:'Hébergement et inférence de modèles efficaces', en:'High-throughput serving and inference'}, domain: 'vllm.ai', url: 'https://vllm.ai', tag: 'free' },
+  { cat: 'opensource', name: 'llama.cpp', tags: 'free code', desc: {ar:'تشغيل النماذج محلياً على أجهزة مختلفة', fr:'Exécution locale de modèles sur divers appareils', en:'Run models locally on various devices'}, domain: 'github.com', url: 'https://github.com/ggerganov/llama.cpp', tag: 'free' },
+
+  { cat: 'research', name: 'Consensus', tags: 'popular free', desc: {ar:'إجابات مبنية على الدراسات العلمية', fr:'Réponses basées sur des études scientifiques', en:'Answers backed by scientific studies'}, domain: 'consensus.app', url: 'https://consensus.app', tag: 'free' },
+  { cat: 'research', name: 'Elicit', tags: 'popular free', desc: {ar:'مراجعة الأدبيات واستخراج البيانات', fr:'Revue de littérature et extraction de données', en:'Literature review and data extraction'}, domain: 'elicit.com', url: 'https://elicit.com', tag: 'free' },
+  { cat: 'research', name: 'SciSpace', tags: 'popular free', desc: {ar:'قراءة وشرح المقالات العلمية', fr:'Lire et expliquer les articles scientifiques', en:'Read and explain scientific papers'}, domain: 'scispace.com', url: 'https://scispace.com', tag: 'free' },
+  { cat: 'research', name: 'Semantic Scholar', tags: 'free', desc: {ar:'البحث الذكي عن المنشورات العلمية', fr:'Recherche intelligente de publications', en:'Smart search for scientific publications'}, domain: 'semanticscholar.org', url: 'https://semanticscholar.org', tag: 'free' },
+  { cat: 'research', name: 'Connected Papers', tags: 'free', desc: {ar:'رسم العلاقات بين المقالات العلمية', fr:'Cartographier les relations entre articles', en:'Visualize relationships between papers'}, domain: 'connectedpapers.com', url: 'https://connectedpapers.com', tag: 'free' },
+  { cat: 'research', name: 'Scite', tags: 'paid', desc: {ar:'معرفة ما إذا كانت الدراسات تدعم أو تعارض نتائج أخرى', fr:'Savoir si les études soutiennent ou contredisent', en:'See if studies support or contrast findings'}, domain: 'scite.ai', url: 'https://scite.ai', tag: 'paid' },
+  { cat: 'research', name: 'ResearchRabbit', tags: 'free', desc: {ar:'اكتشاف الأبحاث المرتبطة وبناء شبكات المراجع', fr:'Découvrir des recherches liées et construire des réseaux', en:'Discover related research and build reference networks'}, domain: 'researchrabbit.ai', url: 'https://researchrabbit.ai', tag: 'free' },
+  { cat: 'research', name: 'Scholarcy', tags: 'free', desc: {ar:'تلخيص المقالات واستخراج النقاط الأساسية', fr:'Résumer les articles et extraire les points clés', en:'Summarize articles and extract key points'}, domain: 'scholarcy.com', url: 'https://scholarcy.com', tag: 'free' },
+
+  { cat: 'pdf', name: 'NotebookLM', tags: 'popular free', desc: {ar:'تحليل مصادر المستخدم وإنشاء ملخصات ومناقشات صوتية', fr:'Analyser des sources et créer des résumés et podcasts', en:'Analyze sources and create summaries and audio discussions'}, domain: 'notebooklm.google', url: 'https://notebooklm.google', tag: 'free' },
+  { cat: 'pdf', name: 'ChatPDF', tags: 'popular free', desc: {ar:'طرح الأسئلة على ملفات PDF', fr:'Poser des questions sur des fichiers PDF', en:'Ask questions on PDF files'}, domain: 'chatpdf.com', url: 'https://chatpdf.com', tag: 'free' },
+  { cat: 'pdf', name: 'Humata AI', tags: 'free', desc: {ar:'تحليل المستندات الطويلة والمعقدة', fr:'Analyser des documents longs et complexes', en:'Analyze long and complex documents'}, domain: 'humata.ai', url: 'https://humata.ai', tag: 'free' },
+  { cat: 'pdf', name: 'PDFgear', tags: 'free', desc: {ar:'تحرير وتحويل وتلخيص PDF مجاناً', fr:'Éditer, convertir et résumer des PDF gratuitement', en:'Edit, convert and summarize PDFs for free'}, domain: 'pdfgear.com', url: 'https://pdfgear.com', tag: 'free' },
+  { cat: 'pdf', name: 'Mathpix', tags: 'paid', desc: {ar:'استخراج المعادلات الرياضية من الصور وPDF', fr:'Extraire des équations mathématiques d\'images/PDF', en:'Extract math equations from images and PDFs'}, domain: 'mathpix.com', url: 'https://mathpix.com', tag: 'paid' },
+  { cat: 'pdf', name: 'LlamaParse', tags: 'free', desc: {ar:'تحويل المستندات إلى بيانات قابلة للمعالجة', fr:'Convertir des documents en données traitables', en:'Convert documents into parsable data'}, domain: 'llamaindex.ai', url: 'https://llamaindex.ai', tag: 'free' },
+
+  { cat: 'code', name: 'GitHub Copilot', tags: 'popular paid', desc: {ar:'إكمال الأكواد وشرحها وتطوير المشاريع', fr:'Complétion de code, explication et développement', en:'Code completion, explanation and development'}, domain: 'github.com', url: 'https://github.com/features/copilot', tag: 'paid' },
+  { cat: 'code', name: 'Cursor', tags: 'popular free', desc: {ar:'محرر برمجي مدعوم بالذكاء الاصطناعي', fr:'Éditeur de code alimenté par l\'IA', en:'AI-powered code editor'}, domain: 'cursor.com', url: 'https://cursor.com', tag: 'free' },
+  { cat: 'code', name: 'Windsurf', tags: 'free', desc: {ar:'تطوير البرامج بمساعدة وكلاء البرمجة', fr:'Développement logiciel assisté par agents', en:'Software development assisted by coding agents'}, domain: 'windsurf.com', url: 'https://windsurf.com', tag: 'free' },
+  { cat: 'code', name: 'Replit', tags: 'free', desc: {ar:'تطوير وتشغيل التطبيقات عبر الإنترنت', fr:'Développer et exécuter des applications en ligne', en:'Develop and run applications online'}, domain: 'replit.com', url: 'https://replit.com', tag: 'free' },
+  { cat: 'code', name: 'v0', tags: 'free', desc: {ar:'توليد واجهات المستخدم والتطبيقات من نص', fr:'Générer des interfaces et applications à partir de texte', en:'Generate UI and apps from text'}, domain: 'vercel.com', url: 'https://v0.dev', tag: 'free' },
+  { cat: 'code', name: 'Tabnine', tags: 'free', desc: {ar:'إكمال الأكواد الذكي', fr:'Complétion de code intelligente', en:'Smart code completion'}, domain: 'tabnine.com', url: 'https://tabnine.com', tag: 'free' },
+  { cat: 'code', name: 'Devin', tags: 'paid', desc: {ar:'وكيل للمساعدة في مهام تطوير البرمجيات', fr:'Agent pour aider aux tâches de développement', en:'Agent to assist in software development tasks'}, domain: 'cognition.ai', url: 'https://cognition.ai', tag: 'paid' },
+
+  { cat: 'image', name: 'Midjourney', tags: 'popular paid', desc: {ar:'صور فنية واحترافية عالية الجودة', fr:'Images artistiques et professionnelles de haute qualité', en:'High-quality artistic and professional images'}, domain: 'midjourney.com', url: 'https://midjourney.com', tag: 'paid' },
+  { cat: 'image', name: 'DALL·E', tags: 'popular free', desc: {ar:'توليد الصور من النصوص عبر OpenAI', fr:'Génération d\'images à partir de texte via OpenAI', en:'Generate images from text via OpenAI'}, domain: 'openai.com', url: 'https://openai.com/dall-e-3', tag: 'free' },
+  { cat: 'image', name: 'Adobe Firefly', tags: 'popular free', desc: {ar:'توليد وتحرير الصور بأمان تجاري', fr:'Génération et édition d\'images en toute sécurité commerciale', en:'Commercially safe image generation and editing'}, domain: 'firefly.adobe.com', url: 'https://firefly.adobe.com', tag: 'free' },
+  { cat: 'image', name: 'Leonardo AI', tags: 'popular free', desc: {ar:'تصميم الصور والشخصيات والأصول البصرية', fr:'Conception d\'images, personnages et actifs visuels', en:'Design images, characters and visual assets'}, domain: 'leonardo.ai', url: 'https://leonardo.ai', tag: 'free' },
+  { cat: 'image', name: 'Ideogram', tags: 'free', desc: {ar:'توليد الصور ودمج النصوص داخلها بدقة', fr:'Génération d\'images et intégration précise de texte', en:'Image generation with accurate text integration'}, domain: 'ideogram.ai', url: 'https://ideogram.ai', tag: 'free' },
+  { cat: 'image', name: 'FLUX', tags: 'free', desc: {ar:'نماذج توليد صور مفتوحة ومتقدمة', fr:'Modèles de génération d\'images ouverts et avancés', en:'Advanced open image generation models'}, domain: 'blackforestlabs.ai', url: 'https://blackforestlabs.ai', tag: 'free' },
+  { cat: 'image', name: 'Recraft', tags: 'free', desc: {ar:'الرسوم المتجهة والشعارات والتصميم', fr:'Graphiques vectoriels, logos et design', en:'Vector graphics, logos and design'}, domain: 'recraft.ai', url: 'https://recraft.ai', tag: 'free' },
+
+  { cat: 'video', name: 'Runway', tags: 'popular paid', desc: {ar:'إنشاء وتحرير الفيديو المتقدم', fr:'Création et édition vidéo avancée', en:'Advanced video creation and editing'}, domain: 'runwayml.com', url: 'https://runwayml.com', tag: 'paid' },
+  { cat: 'video', name: 'Kling AI', tags: 'popular free', desc: {ar:'تحويل النص والصور إلى فيديو واقعي', fr:'Conversion de texte et images en vidéo réaliste', en:'Convert text and images to realistic video'}, domain: 'klingai.com', url: 'https://klingai.com', tag: 'free' },
+  { cat: 'video', name: 'Luma Dream Machine', tags: 'popular free', desc: {ar:'توليد الفيديو والمشاهد عالية الجودة', fr:'Génération de vidéo et scènes de haute qualité', en:'High-quality video and scene generation'}, domain: 'lumalabs.ai', url: 'https://lumalabs.ai', tag: 'free' },
+  { cat: 'video', name: 'HeyGen', tags: 'paid', desc: {ar:'إنشاء فيديوهات بشخصيات افتراضية متحدثة', fr:'Créer des vidéos avec des avatars parlants', en:'Create videos with talking avatars'}, domain: 'heygen.com', url: 'https://heygen.com', tag: 'paid' },
+  { cat: 'video', name: 'CapCut AI', tags: 'free', desc: {ar:'تحرير الفيديو وإضافة المؤثرات تلقائياً', fr:'Montage vidéo et ajout d\'effets automatiques', en:'Video editing and automatic effects addition'}, domain: 'capcut.com', url: 'https://capcut.com', tag: 'free' },
+  { cat: 'video', name: 'Sora', tags: 'paid', desc: {ar:'توليد الفيديو من النص والصورة (OpenAI)', fr:'Génération vidéo à partir de texte/image (OpenAI)', en:'Video generation from text/image (OpenAI)'}, domain: 'openai.com', url: 'https://openai.com/sora', tag: 'paid' },
+
+  { cat: 'audio', name: 'ElevenLabs', tags: 'popular paid', desc: {ar:'توليد الأصوات والتعليق الصوتي الواقعي', fr:'Génération de voix et narration réaliste', en:'Realistic voice generation and narration'}, domain: 'elevenlabs.io', url: 'https://elevenlabs.io', tag: 'paid' },
+  { cat: 'audio', name: 'Whisper', tags: 'popular free', desc: {ar:'تحويل الصوت إلى نص بدقة عالية', fr:'Conversion audio en texte avec haute précision', en:'High-accuracy speech to text'}, domain: 'openai.com', url: 'https://openai.com/whisper', tag: 'free' },
+  { cat: 'audio', name: 'Suno', tags: 'popular free', desc: {ar:'إنشاء الأغاني والموسيقى من وصف نصي', fr:'Créer des chansons et musique à partir de texte', en:'Create songs and music from text description'}, domain: 'suno.com', url: 'https://suno.com', tag: 'free' },
+  { cat: 'audio', name: 'Udio', tags: 'free', desc: {ar:'توليد الموسيقى والأغاني بجودة احترافية', fr:'Génération de musique et chansons de qualité pro', en:'Professional quality music and song generation'}, domain: 'udio.com', url: 'https://udio.com', tag: 'free' },
+  { cat: 'audio', name: 'Adobe Podcast', tags: 'free', desc: {ar:'تحسين التسجيلات الصوتية وإزالة الضوضاء', fr:'Amélioration des enregistrements et suppression du bruit', en:'Enhance audio recordings and remove noise'}, domain: 'podcast.adobe.com', url: 'https://podcast.adobe.com', tag: 'free' },
+
+  { cat: 'edu', name: 'MagicSchool AI', tags: 'popular free', desc: {ar:'إعداد الدروس والأنشطة والتقييمات للمعلمين', fr:'Préparation de leçons, activités et évaluations', en:'Lesson planning, activities and assessments for teachers'}, domain: 'magicschool.ai', url: 'https://magicschool.ai', tag: 'free' },
+  { cat: 'edu', name: 'Khanmigo', tags: 'paid', desc: {ar:'المساعدة التعليمية التفاعلية من خان أكاديمي', fr:'Assistance éducative interactive de Khan Academy', en:'Interactive educational assistance from Khan Academy'}, domain: 'khanacademy.org', url: 'https://khanacademy.org', tag: 'paid' },
+  { cat: 'edu', name: 'Diffit', tags: 'free', desc: {ar:'تكييف المحتوى حسب مستوى الطلاب', fr:'Adapter le contenu au niveau des étudiants', en:'Adapt content to student level'}, domain: 'diffit.me', url: 'https://diffit.me', tag: 'free' },
+  { cat: 'edu', name: 'Quizizz AI', tags: 'free', desc: {ar:'إنشاء الاختبارات والأنشطة التفاعلية', fr:'Créer des quiz et activités interactives', en:'Create interactive quizzes and activities'}, domain: 'quizizz.com', url: 'https://quizizz.com', tag: 'free' },
+
+  { cat: 'write', name: 'DeepL', tags: 'popular free', desc: {ar:'الترجمة وتحسين النصوص بدقة فائقة', fr:'Traduction et amélioration de texte avec haute précision', en:'Translation and text improvement with high accuracy'}, domain: 'deepl.com', url: 'https://deepl.com', tag: 'free' },
+  { cat: 'write', name: 'QuillBot', tags: 'popular free', desc: {ar:'إعادة الصياغة والتدقيق اللغوي', fr:'Reformulation et correction grammaticale', en:'Paraphrasing and grammar checking'}, domain: 'quillbot.com', url: 'https://quillbot.com', tag: 'free' },
+  { cat: 'write', name: 'Grammarly', tags: 'popular free', desc: {ar:'تحسين الكتابة باللغة الإنجليزية', fr:'Amélioration de l\'écriture en anglais', en:'Improve English writing'}, domain: 'grammarly.com', url: 'https://grammarly.com', tag: 'free' },
+  { cat: 'write', name: 'Smodin', tags: 'free', desc: {ar:'إعادة الصياغة والتلخيص يدعم العربية', fr:'Reformulation et résumé prenant en charge l\'arabe', en:'Paraphrasing and summarization supporting Arabic'}, domain: 'smodin.io', url: 'https://smodin.io', tag: 'free' },
+
+  { cat: 'office', name: 'Gamma', tags: 'popular free', desc: {ar:'إنشاء العروض التقديمية والمستندات بسرعة', fr:'Créer rapidement des présentations et documents', en:'Quickly create presentations and documents'}, domain: 'gamma.app', url: 'https://gamma.app', tag: 'free' },
+  { cat: 'office', name: 'Canva', tags: 'popular free', desc: {ar:'تصميم العروض والملصقات والمحتوى البصري', fr:'Concevoir des présentations, affiches et contenu visuel', en:'Design presentations, posters and visual content'}, domain: 'canva.com', url: 'https://canva.com', tag: 'free' },
+  { cat: 'office', name: 'Microsoft 365 Copilot', tags: 'paid', desc: {ar:'العمل الذكي مع Word وExcel وPowerPoint', fr:'Travail intelligent avec Word, Excel et PowerPoint', en:'Smart work with Word, Excel and PowerPoint'}, domain: 'microsoft.com', url: 'https://microsoft.com', tag: 'paid' },
+
+  { cat: 'data', name: 'Julius AI', tags: 'popular free', desc: {ar:'تحليل البيانات بلغة طبيعية وإنشاء رسوم', fr:'Analyse de données en langage naturel et graphiques', en:'Natural language data analysis and charting'}, domain: 'julius.ai', url: 'https://julius.ai', tag: 'free' },
+  { cat: 'data', name: 'Kaggle', tags: 'popular free', desc: {ar:'مجموعات البيانات والتجارب والمسابقات', fr:'Jeux de données, expériences et compétitions', en:'Datasets, experiments and competitions'}, domain: 'kaggle.com', url: 'https://kaggle.com', tag: 'free' },
+  { cat: 'data', name: 'Google Colab', tags: 'popular free', desc: {ar:'تشغيل Python وDeep Learning في المتصفح', fr:'Exécuter Python et Deep Learning dans le navigateur', en:'Run Python and Deep Learning in the browser'}, domain: 'colab.research.google.com', url: 'https://colab.research.google.com', tag: 'free' },
+  { cat: 'data', name: 'Tableau AI', tags: 'paid', desc: {ar:'تصور البيانات وتحليلها بذكاء', fr:'Visualisation et analyse intelligente des données', en:'Smart data visualization and analysis'}, domain: 'tableau.com', url: 'https://tableau.com', tag: 'paid' },
+
+  { cat: 'agents', name: 'n8n', tags: 'popular free', desc: {ar:'أتمتة العمليات وربط نماذج الذكاء الاصطناعي', fr:'Automatisation des processus et liaison de modèles IA', en:'Process automation and linking AI models'}, domain: 'n8n.io', url: 'https://n8n.io', tag: 'free' },
+  { cat: 'agents', name: 'Zapier', tags: 'popular paid', desc: {ar:'ربط التطبيقات وأتمتة المهام بسهولة', fr:'Lier des applications et automatiser des tâches facilement', en:'Connect apps and automate tasks easily'}, domain: 'zapier.com', url: 'https://zapier.com', tag: 'paid' },
+  { cat: 'agents', name: 'LangChain', tags: 'free code', desc: {ar:'بناء تطبيقات ووكلاء ذكيين', fr:'Construire des applications et agents intelligents', en:'Build intelligent applications and agents'}, domain: 'langchain.com', url: 'https://langchain.com', tag: 'free' },
+  { cat: 'agents', name: 'Dify', tags: 'free', desc: {ar:'بناء تطبيقات ووكلاء LLM بصرياً', fr:'Construire des applications et agents LLM visuellement', en:'Visually build LLM applications and agents'}, domain: 'dify.ai', url: 'https://dify.ai', tag: 'free' },
+
+  { cat: '3d', name: 'Meshy AI', tags: 'free', desc: {ar:'تحويل النص والصور إلى مجسمات 3D', fr:'Convertir texte et images en modèles 3D', en:'Convert text and images to 3D models'}, domain: 'meshy.ai', url: 'https://meshy.ai', tag: 'free' },
+  { cat: '3d', name: 'Spline AI', tags: 'free', desc: {ar:'تصميم مشاهد ثلاثية الأبعاد تفاعلية', fr:'Concevoir des scènes 3D interactives', en:'Design interactive 3D scenes'}, domain: 'spline.design', url: 'https://spline.design', tag: 'free' },
+  { cat: '3d', name: 'Luma Genie', tags: 'free', desc: {ar:'إنشاء الأصول ثلاثية الأبعاد من النص', fr:'Créer des actifs 3D à partir de texte', en:'Create 3D assets from text'}, domain: 'lumalabs.ai', url: 'https://lumalabs.ai', tag: 'free' },
+
+  { cat: 'meetings', name: 'Otter.ai', tags: 'popular free', desc: {ar:'تسجيل وتلخيص الاجتماعات تلقائياً', fr:'Enregistrer et résumer les réunions automatiquement', en:'Automatically record and summarize meetings'}, domain: 'otter.ai', url: 'https://otter.ai', tag: 'free' },
+  { cat: 'meetings', name: 'Fireflies.ai', tags: 'popular free', desc: {ar:'تفريغ الاجتماعات واستخراج المهام', fr:'Transcrire les réunions et extraire les tâches', en:'Transcribe meetings and extract action items'}, domain: 'fireflies.ai', url: 'https://fireflies.ai', tag: 'free' },
+  { cat: 'meetings', name: 'tl;dv', tags: 'free', desc: {ar:'تسجيل الاجتماعات واستخراج النقاط المهمة', fr:'Enregistrer les réunions et extraire les points importants', en:'Record meetings and extract key points'}, domain: 'tldv.io', url: 'https://tldv.io', tag: 'free' },
+
+  { cat: 'marketing', name: 'Jasper AI', tags: 'paid', desc: {ar:'كتابة المحتوى التسويقي والإعلاني', fr:'Rédaction de contenu marketing et publicitaire', en:'Marketing and advertising copywriting'}, domain: 'jasper.ai', url: 'https://jasper.ai', tag: 'paid' },
+  { cat: 'marketing', name: 'Copy.ai', tags: 'free', desc: {ar:'إنشاء المحتوى التسويقي بسرعة', fr:'Créer du contenu marketing rapidement', en:'Create marketing content quickly'}, domain: 'copy.ai', url: 'https://copy.ai', tag: 'free' },
+  { cat: 'marketing', name: 'Surfer SEO', tags: 'paid', desc: {ar:'تحسين محركات البحث والمحتوى', fr:'Optimisation pour les moteurs de recherche et le contenu', en:'Search engine and content optimization'}, domain: 'surferseo.com', url: 'https://surferseo.com', tag: 'paid' },
+
+  { cat: 'nocode', name: 'Webflow', tags: 'popular paid', desc: {ar:'إنشاء وتصميم المواقع احترافياً', fr:'Créer et concevoir des sites web professionnellement', en:'Create and design websites professionally'}, domain: 'webflow.com', url: 'https://webflow.com', tag: 'paid' },
+  { cat: 'nocode', name: 'Bubble', tags: 'popular free', desc: {ar:'إنشاء تطبيقات ويب بدون برمجة تقليدية', fr:'Créer des applications web sans programmation traditionnelle', en:'Build web apps without traditional coding'}, domain: 'bubble.io', url: 'https://bubble.io', tag: 'free' },
+  { cat: 'nocode', name: 'Framer AI', tags: 'free', desc: {ar:'إنشاء مواقع من وصف نصي', fr:'Créer des sites à partir d\'une description textuelle', en:'Create websites from text description'}, domain: 'framer.com', url: 'https://framer.com', tag: 'free' },
+
+  { cat: 'science', name: 'Wolfram Alpha', tags: 'popular paid', desc: {ar:'الحسابات الرياضية والفيزيائية المتقدمة', fr:'Calculs mathématiques et physiques avancés', en:'Advanced mathematical and physical computations'}, domain: 'wolframalpha.com', url: 'https://wolframalpha.com', tag: 'paid' },
+  { cat: 'science', name: 'Symbolab', tags: 'free', desc: {ar:'حل المعادلات الرياضية خطوة بخطوة', fr:'Résoudre des équations mathématiques étape par étape', en:'Solve math equations step by step'}, domain: 'symbolab.com', url: 'https://symbolab.com', tag: 'free' },
+  { cat: 'science', name: 'DeepMind AlphaFold', tags: 'free', desc: {ar:'التنبؤ بالبنية البروتينية بدقة', fr:'Prédiction précise de la structure des protéines', en:'Accurate protein structure prediction'}, domain: 'alphafold.ebi.ac.uk', url: 'https://alphafold.ebi.ac.uk', tag: 'free' },
+
+  { cat: 'security', name: 'Microsoft Security Copilot', tags: 'paid', desc: {ar:'تحليل التنبيهات الأمنية والاستجابة', fr:'Analyse des alertes de sécurité et réponse', en:'Security alert analysis and response'}, domain: 'microsoft.com', url: 'https://microsoft.com', tag: 'paid' },
+  { cat: 'security', name: 'Snyk', tags: 'popular free', desc: {ar:'اكتشاف الثغرات البرمجية وإصلاحها', fr:'Détection et correction des vulnérabilités logicielles', en:'Detect and fix software vulnerabilities'}, domain: 'snyk.io', url: 'https://snyk.io', tag: 'free' },
+  { cat: 'security', name: 'VirusTotal', tags: 'popular free', desc: {ar:'تحليل الملفات والروابط المشبوهة', fr:'Analyser les fichiers et liens suspects', en:'Analyze suspicious files and URLs'}, domain: 'virustotal.com', url: 'https://virustotal.com', tag: 'free' },
+
+  { cat: 'productivity', name: 'Notion AI', tags: 'popular paid', desc: {ar:'إدارة المعرفة والملاحظات بذكاء', fr:'Gestion intelligente des connaissances et notes', en:'Smart knowledge and note management'}, domain: 'notion.so', url: 'https://notion.so', tag: 'paid' },
+  { cat: 'productivity', name: 'ClickUp AI', tags: 'popular free', desc: {ar:'إدارة المشاريع والمهام بذكاء', fr:'Gestion intelligente des projets et tâches', en:'Smart project and task management'}, domain: 'clickup.com', url: 'https://clickup.com', tag: 'free' },
+  { cat: 'productivity', name: 'Motion', tags: 'paid', desc: {ar:'تنظيم الوقت والمهام تلقائياً', fr:'Organisation automatique du temps et des tâches', en:'Automatic time and task organization'}, domain: 'usemotion.com', url: 'https://usemotion.com', tag: 'paid' },
+
+  { cat: 'guides', name: 'Hugging Face', tags: 'expert free', desc: {ar:'نماذج مفتوحة، بيانات، Spaces وواجهات API', fr:'Modèles ouverts, données, Spaces et API', en:'Open models, datasets, Spaces and APIs'}, domain: 'huggingface.co', url: 'https://huggingface.co', tag: 'free' },
+  { cat: 'guides', name: 'Papers with Code', tags: 'expert free', desc: {ar:'الأبحاث العلمية مع الأكواد والنتائج', fr:'Recherches scientifiques avec code et résultats', en:'Scientific papers with code and results'}, domain: 'paperswithcode.com', url: 'https://paperswithcode.com', tag: 'free' },
+  { cat: 'guides', name: 'Futurepedia', tags: 'expert free', desc: {ar:'دليل لأدوات الذكاء الاصطناعي حسب المجال', fr:'Guide des outils d\'IA par domaine', en:'Directory of AI tools by category'}, domain: 'futurepedia.io', url: 'https://futurepedia.io', tag: 'free' },
+  { cat: 'guides', name: 'There\'s An AI For That', tags: 'expert free', desc: {ar:'دليل للعثور على أدوات AI حسب المهمة', fr:'Guide pour trouver des outils IA par tâche', en:'Directory to find AI tools by task'}, domain: 'theresanaiforthat.com', url: 'https://theresanaiforthat.com', tag: 'free' }
+];
+
+let currentLang = 'ar';
+let currentFilter = 'all';
+
+function setLanguage(lang) {
+  currentLang = lang;
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
+  });
+
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang][key]) el.textContent = translations[lang][key];
+  });
+  
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    if (translations[lang][key]) el.placeholder = translations[lang][key];
+  });
+
+  renderTools();
+}
+
+function renderTools() {
+  const container = document.getElementById('contentContainer');
+  const searchQuery = document.getElementById('searchInput').value.toLowerCase();
+  container.innerHTML = '';
+  
+  const filteredData = toolsData.filter(tool => {
+    const tags = tool.tags || '';
+    let matchesFilter = false;
+    
+    if (currentFilter === 'all') matchesFilter = true;
+    else if (currentFilter === 'classement') matchesFilter = tool.rank !== undefined;
+    else if (['popular', 'free', 'code', 'image'].includes(currentFilter)) matchesFilter = tags.includes(currentFilter);
+    else matchesFilter = tool.cat === currentFilter;
+    
+    const matchesSearch = tool.name.toLowerCase().includes(searchQuery) || 
+                          tool.desc[currentLang].toLowerCase().includes(searchQuery);
+    return matchesFilter && matchesSearch;
+  });
+
+  const grouped = {};
+  filteredData.forEach(tool => {
+    if (!grouped[tool.cat]) grouped[tool.cat] = [];
+    grouped[tool.cat].push(tool);
+  });
+
+  if (Object.keys(grouped).length === 0) {
+    container.innerHTML = `<div style="text-align:center; padding:40px; color:#64748b; font-size:1.2rem;">${currentLang === 'ar' ? 'لا توجد نتائج مطابقة' : (currentLang === 'fr' ? 'Aucun résultat trouvé' : 'No results found')} 🔍</div>`;
+    return;
+  }
+
+  const categories = {
+    'llm': { ar: '🧠 النماذج اللغوية والمساعدون الأذكياء', fr: '🧠 Modèles Linguistiques et Assistants', en: '🧠 Language Models & Assistants' },
+    'opensource': { ar: '📦 النماذج المفتوحة ومكتبات النماذج', fr: '📦 Modèles Open Source et Bibliothèques', en: '📦 Open-Weight & Open-Source Models' },
+    'research': { ar: '🔬 البحث العلمي والأكاديمي', fr: '🔬 Recherche Scientifique et Académique', en: '🔬 AI Academic Research' },
+    'pdf': { ar: '📄 تحليل ملفات PDF والمستندات', fr: '📄 Analyse de PDF et Documents', en: '📄 Document AI & PDF Analysis' },
+    'code': { ar: '💻 البرمجة وتطوير التطبيقات', fr: '💻 Programmation et Développement', en: '💻 AI Coding & Software Development' },
+    'image': { ar: '🎨 توليد الصور والتصميم', fr: '🎨 Génération d\'Images et Design', en: '🎨 AI Image Generation' },
+    'video': { ar: '🎬 الفيديو والأنيميشن', fr: '🎬 Vidéo et Animation', en: '🎬 AI Video Generation' },
+    'audio': { ar: '🎙️ الصوت، التحدث والموسيقى', fr: '🎙️ Audio, Voix et Musique', en: '🎙️ AI Audio & Music' },
+    'edu': { ar: '🎓 التعليم والتدريس والتقييم', fr: '🎓 Éducation, Enseignement et Évaluation', en: '🎓 AI Education' },
+    'write': { ar: '✍️ الترجمة، التدقيق وإعادة الصياغة', fr: '✍️ Traduction, Correction et Reformulation', en: '✍️ AI Writing & Translation' },
+    'office': { ar: '📊 العروض التقديمية والتصميم المكتبي', fr: '📊 Présentations et Travail de Bureau', en: '📊 AI Presentations & Office' },
+    'data': { ar: '📈 تحليل البيانات والإحصاء والتصور', fr: '📈 Science des Données et Visualisation', en: '📈 AI Data Science' },
+    'agents': { ar: '🤖 الأتمتة والوكلاء الأذكياء', fr: '🤖 Automatisation et Agents Intelligents', en: '🤖 AI Agents & Automation' },
+    '3d': { ar: '🧊 التصميم ثلاثي الأبعاد والهندسة', fr: '🧊 Design 3D et Ingénierie', en: '🧊 AI 3D & Engineering' },
+    'meetings': { ar: '📝 الاجتماعات وتسجيل الملاحظات', fr: '📝 Réunions et Prise de Notes', en: '📝 AI Meetings & Transcription' },
+    'marketing': { ar: '📢 التسويق وإدارة المحتوى', fr: '📢 Marketing et Gestion de Contenu', en: '📢 AI Marketing & Content' },
+    'nocode': { ar: '🛠️ إنشاء المواقع والتطبيقات بدون برمجة', fr: '🛠️ Création de Sites et Apps No-Code', en: '🛠️ No-Code & AI App Builders' },
+    'science': { ar: '🔭 الرياضيات والعلوم والبحث التقني', fr: '🔭 Mathématiques, Sciences et Recherche', en: '🔭 Scientific & Mathematical AI' },
+    'security': { ar: '🛡️ الأمن السيبراني وتحليل البرمجيات', fr: '🛡️ Cybersécurité et Analyse Logicielle', en: '🛡️ AI Cybersecurity' },
+    'productivity': { ar: '⚡ إدارة المشاريع والإنتاجية والمعرفة', fr: '⚡ Gestion de Projet et Productivité', en: '⚡ AI Productivity & Project Management' },
+    'guides': { ar: '📚 أدلة إضافية للعثور على نماذج جديدة', fr: '📚 Guides Supplémentaires pour Nouveaux Modèles', en: '📚 Additional Guides for New Models' }
+  };
+
+  for (const [cat, tools] of Object.entries(grouped)) {
+    const section = document.createElement('div');
+    section.className = 'category-section active';
+    
+    const title = document.createElement('div');
+    title.className = 'category-title';
+    title.textContent = categories[cat] ? categories[cat][currentLang] : cat;
+    section.appendChild(title);
+
+    const grid = document.createElement('div');
+    grid.className = 'grid';
+
+    tools.forEach(tool => {
+      const card = document.createElement('a');
+      card.className = 'card';
+      card.href = tool.url;
+      card.target = '_blank';
+      
+      const tagText = translations[currentLang][`tag_${tool.tag}`] || tool.tag;
+      const logoUrl = `https://www.google.com/s2/favicons?domain=${tool.domain}&sz=128`;
+      
+      let medal = '';
+      if (tool.rank === 1) medal = '🥇 #1';
+      else if (tool.rank === 2) medal = '🥈 #2';
+      else if (tool.rank === 3) medal = '🥉 #3';
+      const rankBadgeHTML = medal ? `<div class="rank-badge">${medal}</div>` : '';
+
+      card.innerHTML = `
+        ${rankBadgeHTML}
+        <span class="tag ${tool.tag}">${tagText}</span>
+        <img src="${logoUrl}" alt="${tool.name}" class="card-logo" onerror="this.src='https://via.placeholder.com/64?text=AI'">
+        <h3>${tool.name}</h3>
+        <p>${tool.desc[currentLang]}</p>
+      `;
+      grid.appendChild(card);
+    });
+
+    section.appendChild(grid);
+    container.appendChild(section);
+  }
+
+  // Add Important Notes Section at the bottom if showing all or specific categories
+  if (currentFilter === 'all' || currentFilter === 'guides') {
+    const notesSection = document.createElement('div');
+    notesSection.className = 'notes-section';
+    notesSection.innerHTML = `
+      <h3 data-i18n="notes_title">${translations[currentLang].notes_title}</h3>
+      <ul>
+        <li><strong>${currentLang === 'ar' ? 'الأسعار' : (currentLang === 'fr' ? 'Prix' : 'Pricing')}:</strong> ${currentLang === 'ar' ? 'وجود علامة مجانية لا يعني أن كل الإمكانيات مجانية؛ غالباً توجد حدود للاستخدام أو اشتراكات مدفوعة.' : (currentLang === 'fr' ? 'Le tag \"Gratuit\" ne signifie pas que toutes les fonctionnalités le sont ; il y a souvent des limites ou des abonnements payants.' : 'The \"Free\" tag doesn\'t mean all features are free; there are often usage limits or paid subscriptions.')}</li>
+        <li><strong>${currentLang === 'ar' ? 'النماذج المفتوحة' : (currentLang === 'fr' ? 'Modèles Ouverts' : 'Open Models')}:</strong> ${currentLang === 'ar' ? 'Open-weight لا تعني دائماً Open Source بالكامل؛ يجب التحقق من الترخيص.' : (currentLang === 'fr' ? 'Open-weight ne signifie pas toujours Open Source complet ; vérifiez la licence.' : 'Open-weight doesn\'t always mean fully Open Source; check the license.')}</li>
+        <li><strong>${currentLang === 'ar' ? 'الأبحاث العلمية' : (currentLang === 'fr' ? 'Recherche Scientifique' : 'Scientific Research')}:</strong> ${currentLang === 'ar' ? 'لا تعتمد على المراجع التي يولدها أي مساعد قبل التحقق من DOI والناشر والمقال الأصلي.' : (currentLang === 'fr' ? 'Ne vous fiez pas aux références générées sans vérifier le DOI, l\'éditeur et l\'article original.' : 'Do not rely on generated references without verifying the DOI, publisher, and original paper.')}</li>
+        <li><strong>${currentLang === 'ar' ? 'الخصوصية' : (currentLang === 'fr' ? 'Confidentialité' : 'Privacy')}:</strong> ${currentLang === 'ar' ? 'لا ترفع بيانات المرضى أو المعلومات البحثية السرية إلى منصات عامة دون التأكد من شروط الخصوصية.' : (currentLang === 'fr' ? 'Ne téléchargez pas de données sensibles ou de recherche secrète sur des plateformes publiques sans vérifier les conditions de confidentialité.' : 'Do not upload sensitive patient data or secret research info to public platforms without checking privacy terms.')}</li>
+        <li><strong>${currentLang === 'ar' ? 'المقارنة العلمية' : (currentLang === 'fr' ? 'Comparaison Scientifique' : 'Scientific Comparison')}:</strong> ${currentLang === 'ar' ? 'لا تقارن النماذج اعتماداً على الدعاية فقط؛ استخدم Benchmarks وقياسات موحدة.' : (currentLang === 'fr' ? 'Ne comparez pas les modèles uniquement sur la base du marketing ; utilisez des benchmarks et des mesures standardisées.' : 'Do not compare models based on marketing alone; use standardized benchmarks and metrics.')}</li>
+      </ul>
+    `;
+    container.appendChild(notesSection);
+  }
+}
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.filter;
+    renderTools();
+  });
+});
+
+document.getElementById('searchInput').addEventListener('input', () => {
+  renderTools();
+});
+
+setLanguage('ar');
+</script>
+
+</body>
+</html>
